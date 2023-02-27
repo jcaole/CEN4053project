@@ -3,7 +3,7 @@ import MainView from '../components/home/MainView';
 import Footer from '../components/Footer';
 
 import { login } from '../util/users/login';
-import { SendMessage } from '../util/messaging'
+import { SendMessage } from '../util/messages/messaging'
 
 export const HomePage = () => {
 

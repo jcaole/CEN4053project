@@ -1,9 +1,7 @@
 
-import { db, auth } from '../firebase/firebase';
+import { db, auth } from '../../firebase/firebase';
 
 import { collection, addDoc, setDoc } from 'firebase/firestore';
-
-type MessageListener = ()=>void;
 
 /**
  * Sends a new message to the database, adds current user and timestamp to message
