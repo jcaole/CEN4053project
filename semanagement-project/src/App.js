@@ -2,7 +2,7 @@ import './App.css';
 
 import HomePage from './pages/HomePage';
 
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route /*, Link */} from 'react-router-dom';
 
 // const HomePage = lazy(()=> import('./pages/HomePage'));

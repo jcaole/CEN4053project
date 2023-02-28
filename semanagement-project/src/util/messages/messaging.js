@@ -1,7 +1,7 @@
 
 import { db, auth } from '../../firebase/firebase';
 
-import { collection, addDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 
 /**
  * Sends a new message to the database, adds current user and timestamp to message
@@ -9,12 +9,33 @@ import { collection, addDoc, setDoc } from 'firebase/firestore';
  * @param {Message} message - the message content
  */
 const SendMessage = async (room, message) => {
+
+  if (!room || !message) {
+    console.log('Missing Room Or Message');
+  }
+
   if (auth.currentUser) {
     message.user = auth.currentUser.uid;
     message.timestamp = Date.now();
     const messageRef = await addDoc(collection(db, room), message);
     return messageRef.id;
+  } else {
+    console.log('Not Logged In');
   }
+};
+
+const Load_Messages = async (room, timeMinutes, maxCount) => {
+  const q = query(collection(db, room), where("timestamp", ">=", Date.now()-(timeMinutes * 60000)), orderBy("timestamp", "desc"), limit(maxCount));
+  const messages = await getDocs(q)
+  .catch((error)=>{
+    console.log(`Error Loading Messages: ${error}`);
+    return [];
+  });
+  const ret = [];
+  messages.forEach((message)=>{
+    ret.push({id: message.id, data: message.data()});
+  });
+  return ret;
 };
 
 /**
@@ -23,12 +44,14 @@ const SendMessage = async (room, message) => {
  * @param {MessageListener} listener - listener method
  */
 const Subscribe_NewMessage = (room, listener) => {
-  const roomRef = db.collection(room)
-                      .orderBy("timestamp");
-  roomRef.onSnapshot((snapshot)=>{
+  const roomRef = collection(db, room);
+  const time = Date.now();
+  onSnapshot(roomRef, (snapshot)=>{
     snapshot.docChanges().forEach(change => {
       if (change.type === 'added') {
-        listener(change.doc.data());
+        if (change.doc.data().timestamp > time) {
+          listener({id: change.doc.id, data: change.doc.data()});
+        }
       }
     });
   });
@@ -46,6 +69,7 @@ const UnSubscribe_Message = (room, listener) => {
 
 
 export {
+  Load_Messages,
   SendMessage,
   Subscribe_NewMessage,
   UnSubscribe_Message,
