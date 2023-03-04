@@ -25,7 +25,12 @@ const SendMessage = async (room, message) => {
 };
 
 const Load_Messages = async (room, timeMinutes, maxCount) => {
-  const q = query(collection(db, room), where("timestamp", ">=", Date.now()-(timeMinutes * 60000)), orderBy("timestamp", "desc"), limit(maxCount));
+  let q;
+  if (timeMinutes !== -1) {
+    q = query(collection(db, room), where("timestamp", ">=", Date.now()-(timeMinutes * 60000)), orderBy("timestamp", "desc"), limit(maxCount));
+  } else {
+    q = query(collection(db, room), orderBy("timestamp", "desc"), limit(maxCount));
+  }
   const messages = await getDocs(q)
   .catch((error)=>{
     console.log(`Error Loading Messages: ${error}`);
