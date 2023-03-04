@@ -1,20 +1,26 @@
 import React, { useEffect } from 'react';
 
-import { Load_Messages, SendMessage, Subscribe_NewMessage } from '../util/messages/messaging'
+import { Load_Messages, SendMessage, Subscribe_NewMessage } from '../util/messages/messaging';
+import { makeRoom } from '../util/rooms/chat_rooms';
 
 export default function Chat() {
 
   const [chat, setChat] = React.useState(null);
   const [messages, setMessages] = React.useState([]);
+  const [roomId, setRoomId] = React.useState([]);
 
-  useEffect(()=>{
-    Load_Messages('testroom', -1, 20)
+  const loadRoomMessages = (roomID) => {
+    Load_Messages(roomID, -1, 20)
     .then((data)=>{
       setMessages(data);
-      Subscribe_NewMessage('testroom', (message)=>{
+      Subscribe_NewMessage(roomID, (message)=>{
         setMessages(prev => [message, ...prev]);
       });
     });
+  }
+
+  useEffect(()=>{
+    loadRoomMessages('default');
   }, []);
 
   return (
@@ -25,8 +31,9 @@ export default function Chat() {
           ))}
         </ul>
         <input type="text" onChange={(e)=>{ e.preventDefault(); setChat(e.target.value)}} />
-        
-        <button onClick={(e)=>{ e.preventDefault(); SendMessage('testroom', { content: chat, type: 'string'}); }}>Send Message</button>
+        <button onClick={(e)=>{ e.preventDefault(); SendMessage(roomId, { content: chat, type: 'string'}); }}>Send Message</button>
+        <input type="text" onChange={(e)=>{ e.preventDefault(); setRoomId(e.target.value)}} />
+        <button onClick={(e)=>{ e.preventDefault(); makeRoom(roomId); loadRoomMessages(roomId)}}>Change Room</button>
       </>
   );
 }

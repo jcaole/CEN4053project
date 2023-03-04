@@ -11,6 +11,7 @@ const SendMessage = async (room, message) => {
 
   if (!room || !message) {
     console.log('Missing Room Or Message');
+    return null;
   }
 
   if (auth.currentUser) {
@@ -20,6 +21,7 @@ const SendMessage = async (room, message) => {
     return messageRef.id;
   } else {
     console.log('Not Logged In');
+    return null;
   }
 };
 
