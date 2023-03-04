@@ -10,7 +10,6 @@ export default function Chat() {
   useEffect(()=>{
     Load_Messages('testroom', -1, 20)
     .then((data)=>{
-      console.log(data);
       setMessages(data);
       Subscribe_NewMessage('testroom', (message)=>{
         setMessages(prev => [message, ...prev]);

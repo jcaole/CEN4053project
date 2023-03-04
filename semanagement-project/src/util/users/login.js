@@ -1,5 +1,5 @@
 import { signInWithPopup } from "firebase/auth";
-import { db, auth, provider } from "../../firebase/firebase";
+import { auth, provider } from "../../firebase/firebase";
 
 const login = ()=>{
     signInWithPopup(auth, provider)
@@ -10,7 +10,6 @@ const login = ()=>{
         console.log(`Login Error: ${error}`);
       });
 };
-
 
 export {
   login,

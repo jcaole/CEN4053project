@@ -5,8 +5,6 @@ import MainView from '../components/home/MainView';
 import { login } from '../util/users/login';
 
 export const HomePage = () => {
-
-  
   
   return (
     <div>

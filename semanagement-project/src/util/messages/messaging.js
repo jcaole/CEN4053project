@@ -1,6 +1,5 @@
 
 import { db, auth } from '../../firebase/firebase';
-
 import { collection, addDoc, onSnapshot, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 
 /**
