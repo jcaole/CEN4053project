@@ -3,7 +3,7 @@ import Chat from '../components/Chat';
 import { Container } from 'react-bootstrap'
 // import { userLogin } from '../util/user-input/userLogin';
 import ServerList from '../components/ServerList';
-import UserList from '../components/UserList';
+// import UserList from '../components/UserList';
 import UniversalNavBar from '../components/UniversalNavBar';
 
 export const HomePage = (props) => {
@@ -26,16 +26,12 @@ export const HomePage = (props) => {
   return (
     <div>
       <Container fluid style={backgroundImage}>
-        {}
         <UniversalNavBar/>
-        {/* <button onClick={(e)=>{ userLogin(); }}>Login</button> */}
-        {/* <userLogin/> */}
         <div style={styles.container}>
           <ServerList />
           <Chat />
-          <UserList/>
+          {/* <UserList/> */}
         </div>
-      
       </Container>
     </div>
   );

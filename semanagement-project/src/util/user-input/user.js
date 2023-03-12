@@ -17,4 +17,4 @@ const getUserInfo = async (userID) => {
 
 export {
   getUserInfo,
-}
+};
