@@ -1,9 +1,10 @@
 import React from 'react';
 import Chat from '../components/Chat';
 import { Container } from 'react-bootstrap'
-import { userLogin } from '../util/user-input/userLogin';
+// import { userLogin } from '../util/user-input/userLogin';
 import ServerList from '../components/ServerList';
 import UserList from '../components/UserList';
+import UniversalNavBar from '../components/UniversalNavBar';
 
 export const HomePage = (props) => {
   const backgroundImage = {
@@ -26,9 +27,9 @@ export const HomePage = (props) => {
     <div>
       <Container fluid style={backgroundImage}>
         {}
-        
-        <button onClick={(e)=>{ userLogin(); }}>Login</button>
-        <userLogin/>
+        <UniversalNavBar/>
+        {/* <button onClick={(e)=>{ userLogin(); }}>Login</button> */}
+        {/* <userLogin/> */}
         <div style={styles.container}>
           <ServerList />
           <Chat />
