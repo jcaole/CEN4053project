@@ -37,10 +37,11 @@ export default function Chat() {
     <ul>
           {messages.map((item, index, array) => (
             <li key={array[array.length - 1 - index].id}>
-              {array[array.length - 1 - index].data.content} - {' '}
               <span style={{ fontStyle: 'italic', fontSize: '0.8rem' }}>
                 {getUserInfo(array[array.length - 1 - index].data.sender)?.displayName}
               </span>
+              - {' '} {array[array.length - 1 - index].data.content}
+              
             </li>
           ))}
         </ul>

@@ -4,7 +4,7 @@ import { signInWithPopup } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, provider } from "../../firebase/firebase";
 
-const login = ()=>{
+const userLogin = ()=>{
     signInWithPopup(auth, provider)
       .then((user) => {
         const u = user.user;
@@ -22,5 +22,5 @@ const login = ()=>{
 };
 
 export {
-  login,
+  userLogin,
 }

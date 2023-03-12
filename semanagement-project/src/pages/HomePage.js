@@ -1,7 +1,9 @@
 import React from 'react';
 import Chat from '../components/Chat';
-import { Container, Card } from 'react-bootstrap'
-import { login } from '../util/user-input/login';
+import { Container } from 'react-bootstrap'
+import { userLogin } from '../util/user-input/userLogin';
+import ServerList from '../components/ServerList';
+import UserList from '../components/UserList';
 
 export const HomePage = (props) => {
   const backgroundImage = {
@@ -10,17 +12,29 @@ export const HomePage = (props) => {
     height: '100vh',
   };
 
-  const { title, content } = props;
+  const styles = {
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      height: '100vh',
+    },
+  };
+
+  // const { title, content } = props;
 
   return (
     <div>
       <Container fluid style={backgroundImage}>
         {}
         
-        <button onClick={(e)=>{ login(); }}>Login</button>
-        <Chat />
+        <button onClick={(e)=>{ userLogin(); }}>Login</button>
+        <userLogin/>
+        <div style={styles.container}>
+          <ServerList />
+          <Chat />
+          <UserList/>
+        </div>
       
-        {/* <MainView /> */}
       </Container>
     </div>
   );
