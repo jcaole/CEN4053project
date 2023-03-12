@@ -1,22 +1,26 @@
 import React from 'react';
 import Chat from '../components/Chat';
-import MainView from '../components/home/MainView';
-import {Container} from 'react-bootstrap'
-import { login } from '../util/users/login';
+import { Container, Card } from 'react-bootstrap'
+import { login } from '../util/user-input/login';
 
-export const HomePage = () => {
+export const HomePage = (props) => {
   const backgroundImage = {
     backgroundImage: 'url("./images/jazz.jpg")',
     backgroundSize: 'cover',
     height: '100vh',
   };
+
+  const { title, content } = props;
+
   return (
     <div>
       <Container fluid style={backgroundImage}>
         {}
-        <Chat />
+        
         <button onClick={(e)=>{ login(); }}>Login</button>
-        <MainView />
+        <Chat />
+      
+        {/* <MainView /> */}
       </Container>
     </div>
   );
