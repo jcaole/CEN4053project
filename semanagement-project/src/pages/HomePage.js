@@ -1,16 +1,15 @@
 import React from 'react';
 import Chat from '../components/Chat';
 import MainView from '../components/home/MainView';
-
-import { login } from '../util/users/login';
+import { Login } from '../components/Login';
 
 export const HomePage = () => {
   
   return (
     <div>
       <Chat />
-      <button onClick={(e)=>{ login(); }}>Login</button>
       <MainView />
+      <Login />
     </div>
     );
 };
