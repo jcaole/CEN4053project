@@ -17,7 +17,7 @@ const SendMessage = async (room, message) => {
   if (auth.currentUser) {
     message.user = auth.currentUser.uid;
     message.timestamp = Date.now();
-    const messageRef = await addDoc(collection(db, room), message);
+    const messageRef = await addDoc(collection(db, `rooms/${room}/chat`), message);
     return messageRef.id;
   } else {
     console.log('Not Logged In');
@@ -28,9 +28,9 @@ const SendMessage = async (room, message) => {
 const Load_Messages = async (room, timeMinutes, maxCount) => {
   let q;
   if (timeMinutes !== -1) {
-    q = query(collection(db, room), where("timestamp", ">=", Date.now()-(timeMinutes * 60000)), orderBy("timestamp", "desc"), limit(maxCount));
+    q = query(collection(db, `rooms/${room}/chat`), where("timestamp", ">=", Date.now()-(timeMinutes * 60000)), orderBy("timestamp", "desc"), limit(maxCount));
   } else {
-    q = query(collection(db, room), orderBy("timestamp", "desc"), limit(maxCount));
+    q = query(collection(db, `rooms/${room}/chat`), orderBy("timestamp", "desc"), limit(maxCount));
   }
   const messages = await getDocs(q)
   .catch((error)=>{
@@ -50,7 +50,7 @@ const Load_Messages = async (room, timeMinutes, maxCount) => {
  * @param {MessageListener} listener - listener method
  */
 const Subscribe_NewMessage = (room, listener) => {
-  const roomRef = collection(db, room);
+  const roomRef = collection(db, `rooms/${room}/chat`);
   const time = Date.now();
   onSnapshot(roomRef, (snapshot)=>{
     snapshot.docChanges().forEach(change => {
@@ -69,7 +69,7 @@ const Subscribe_NewMessage = (room, listener) => {
  * @param {MessageListener} listener - listener to remove
  */
 const UnSubscribe_Message = (room, listener) => {
-  const roomRef = db.collection(room);
+  const roomRef = db.collection(`rooms/${room}/chat`);
   roomRef.removeEventListener(listener);
 };
 
