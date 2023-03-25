@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { Load_Messages, SendMessage, Subscribe_NewMessage } from '../util/messages/messaging';
 import { makeRoom } from '../util/rooms/chat_rooms';
 import { getUserInfo } from '../util/user-input/user'
+import { auth } from '../firebase/firebase';
 
 export default function Chat() {
 
+  const [user, setUser] = React.useState(null);
   const [chat, setChat] = React.useState(null);
   const [messages, setMessages] = React.useState([]);
   const [roomId, setRoomId] = React.useState('default');
+  const [tempRoomId, setTempRoomId] = React.useState('default');
 
   const loadRoomMessages = (roomID) => {
     Load_Messages(roomID, -1, 20)
@@ -20,6 +23,9 @@ export default function Chat() {
   }
 
   useEffect(() => {
+    auth.onAuthStateChanged((user)=>{
+      setUser(user);
+    })
     loadRoomMessages(roomId);
   }, [roomId]);
 
@@ -48,12 +54,19 @@ export default function Chat() {
           ))}
         </ul>
       </div>
-      <div style={{ display: "flex", padding: "10px" }}>
-        <input type="text" onChange={(e) => { e.preventDefault(); setChat(e.target.value) }} />
-        <button onClick={(e) => { e.preventDefault(); SendMessage(roomId, { content: chat, type: 'string' }); }}>Send Message</button>
-        <input type="text" onChange={(e) => { e.preventDefault(); setRoomId(e.target.value) }} />
-        <button onClick={(e) => { e.preventDefault(); makeRoom(roomId); loadRoomMessages(roomId) }}>Change Room</button>
-      </div>
+      {
+          user ? (
+            <div style={{ display: "flex", padding: "10px" }}>
+              <input type="text" onChange={(e) => { e.preventDefault(); setChat(e.target.value) }} />
+              <button onClick={(e) => { e.preventDefault(); SendMessage(roomId, { content: chat, type: 'string' }); }}>Send Message</button>
+              <input type="text" onChange={(e) => { e.preventDefault(); setTempRoomId(e.target.value) }} />
+              <button onClick={(e) => { e.preventDefault(); setRoomId(tempRoomId); makeRoom(roomId); loadRoomMessages(roomId) }}>Change Room</button>
+            </div>
+           ) : (
+            <></>
+           )
+      }
+      
     </div>
   );
 }
