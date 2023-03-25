@@ -6,10 +6,10 @@ import { auth, provider } from "../../firebase/firebase";
 
 const userLogin = () => {
   if (auth.currentUser) {
-    throw new Error("User is already logged in");
+    return auth.currentUser.user.displayName;
   }
 
-  signInWithPopup(auth, provider)
+  return signInWithPopup(auth, provider)
     .then((user) => {
       const u = user.user;
       const usersRef = doc(db, 'users', u.uid);
@@ -19,9 +19,11 @@ const userLogin = () => {
         email: u.email,
         photoURL: u.photoURL,
       });
+      return u.displayName;
     })
     .catch((error) => {
       console.log(`Login Error: ${error}`);
+      return null;
     });
 };
 
@@ -39,8 +41,9 @@ const userLogout = () => {
 const getCurrentUserName = () => {
   const currentUser = auth.currentUser;
   if (!currentUser) {
-    return "No user logged in";
+    return null;
   }
+
 
   const usersRef = doc(db, "users", currentUser.uid);
   return getDoc(usersRef)
