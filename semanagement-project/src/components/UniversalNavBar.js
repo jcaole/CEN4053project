@@ -13,7 +13,7 @@ export default function UniversalNavBar() {
     setTimeout(() => {
       fetchUserName();
     }, 200)
-  }, []);
+  }, [userName]);
 
   const handleLogin = async () => {
     const name = await userLogin();

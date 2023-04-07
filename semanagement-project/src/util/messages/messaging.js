@@ -52,7 +52,7 @@ const Load_Messages = async (room, timeMinutes, maxCount) => {
 const Subscribe_NewMessage = (room, listener) => {
   const roomRef = collection(db, `rooms/${room}/chat`);
   const time = Date.now();
-  onSnapshot(roomRef, (snapshot)=>{
+  return onSnapshot(roomRef, (snapshot)=>{
     snapshot.docChanges().forEach(change => {
       if (change.type === 'added') {
         if (change.doc.data().timestamp > time) {
@@ -65,12 +65,12 @@ const Subscribe_NewMessage = (room, listener) => {
 
 /**
  * Removes a message listener from a room
- * @param {string} room - id of room to remove listener from
  * @param {MessageListener} listener - listener to remove
  */
-const UnSubscribe_Message = (room, listener) => {
-  const roomRef = db.collection(`rooms/${room}/chat`);
-  roomRef.removeEventListener(listener);
+const UnSubscribe_Message = (listener) => {
+  if (listener) {
+    listener();
+  }
 };
 
 
