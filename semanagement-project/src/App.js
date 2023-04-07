@@ -26,7 +26,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage/>}/>
-          <Route path="*" element={<h1> PAGE NOT FOUND</h1>} />
+          <Route path="*" element={<h1>404 - PAGE NOT FOUND</h1>} status={404}/>
         </Routes>
         </Suspense>
       </BrowserRouter>
