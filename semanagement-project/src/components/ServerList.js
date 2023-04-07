@@ -25,8 +25,8 @@ export default function ServerList() {
 //   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "60vh", width: "60vh" }}>
-      <h1>Server List</h1>
+    <div style={{ display: "flex", flexDirection: "column", height: "60vh", width: "40vh", textAlign: "left" }}>
+      <h2><u>Room List</u></h2>
       <div style={{
         flex: "1 1 auto",
         overflowY: "scroll",

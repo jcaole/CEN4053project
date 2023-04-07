@@ -1,16 +1,14 @@
 import React from 'react';
 import Chat from '../components/Chat';
 import { Container } from 'react-bootstrap'
-// import { userLogin } from '../util/user-input/userLogin';
 import ServerList from '../components/ServerList';
-// import UserList from '../components/UserList';
 import UniversalNavBar from '../components/UniversalNavBar';
 
 export const HomePage = (props) => {
   const backgroundImage = {
     backgroundImage: 'url("./images/jazz.jpg")',
     backgroundSize: 'cover',
-    height: '100vh',
+    height: '100vh',    
   };
 
   const styles = {
@@ -18,19 +16,23 @@ export const HomePage = (props) => {
       display: 'flex',
       flexDirection: 'row',
       height: '100vh',
+      overflow: 'hidden', // Prevent scrolling
+    },
+    spacer: {
+      margin: '0 10px', // Add some space on the left and right
     },
   };
 
-  // const { title, content } = props;
-
   return (
-    <div>
+    <div style={{ overflow: 'hidden' }}> {/* Prevent scrolling on the body */}
       <Container fluid style={backgroundImage}>
         <UniversalNavBar/>
-        <div style={styles.container}>
-          <ServerList />
-          <Chat />
-          {/* <UserList/> */}
+        <div style={{ overflow: 'hidden' }}> {/* Prevent scrolling on the container */}
+          <div style={styles.container}>
+            <ServerList />
+            <div style={styles.spacer} />
+            <Chat />
+          </div>
         </div>
       </Container>
     </div>

@@ -30,9 +30,9 @@ export default function Chat() {
   }, [roomId]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "60vh", width: "60vh" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "60vh", width: "60vw", textAlign: "left" }}>
       <div style={{ textAlign: "center", margin: "10px" }}>
-        <h2>{roomId}</h2>
+        <h2><u>Current Room: {roomId}</u></h2>
       </div>
       <div style={{ 
         flex: "1 1 auto", 
