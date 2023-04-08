@@ -2,6 +2,7 @@ import React from 'react';
 import Chat from '../components/Chat';
 import { Container } from 'react-bootstrap'
 import ServerList from '../components/ServerList';
+import UserList from '../components/UserList';
 import UniversalNavBar from '../components/UniversalNavBar';
 
 export const HomePage = (props) => {
@@ -23,6 +24,11 @@ export const HomePage = (props) => {
     },
   };
 
+  const [roomId, setRoomId] = React.useState('default');
+  const changeRoomID = ( roomID ) => {
+    setRoomId(roomID);
+  }
+
   return (
     <div style={{ overflow: 'hidden' }}> {/* Prevent scrolling on the body */}
       <Container fluid style={backgroundImage}>
@@ -31,7 +37,8 @@ export const HomePage = (props) => {
           <div style={styles.container}>
             <ServerList />
             <div style={styles.spacer} />
-            <Chat />
+            <Chat onRoomChange={ changeRoomID }/>
+            <UserList userID={props.userID}/>
           </div>
         </div>
       </Container>

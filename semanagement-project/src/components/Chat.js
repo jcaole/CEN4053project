@@ -4,7 +4,7 @@ import { makeRoom } from '../util/rooms/chat_rooms';
 import { getUserInfo } from '../util/user-input/user'
 import { auth } from '../firebase/firebase';
 
-export default function Chat() {
+export default function Chat(onRoomChange) {
 
   const [user, setUser] = React.useState(null);
   const [chat, setChat] = React.useState(null);
@@ -81,7 +81,7 @@ export default function Chat() {
               <input type="text" onChange={(e) => { e.preventDefault(); setChat(e.target.value) }} />
               <button onClick={(e) => { e.preventDefault(); SendMessage(roomId, { content: chat, type: 'string' }); }}>Send Message</button>
               <input type="text" onChange={(e) => { e.preventDefault(); setTempRoomId(e.target.value) }} />
-              <button onClick={(e) => { e.preventDefault(); makeRoom(tempRoomId); setRoomId(tempRoomId); }}>Change Room</button>
+              <button onClick={(e) => { e.preventDefault(); makeRoom(tempRoomId); setRoomId(tempRoomId); onRoomChange(roomId); }}>Change Room</button>
             </div>
            ) : (
             <></>

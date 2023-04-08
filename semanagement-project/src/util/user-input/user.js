@@ -10,10 +10,13 @@ const getUserInfo = async (userID) => {
   const user = await getDoc(ref);
 
   if (user.exists()) {
-    return user.data();
+    const userData = user.data();
+    return { id: userID, ...userData };
   }
+
   return null;
 };
+
 
 export {
   getUserInfo,
