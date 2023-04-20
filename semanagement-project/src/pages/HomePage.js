@@ -35,10 +35,11 @@ export const HomePage = (props) => {
         <UniversalNavBar/>
         <div style={{ overflow: 'hidden' }}> {/* Prevent scrolling on the container */}
           <div style={styles.container}>
-            <ServerList />
+            <ServerList onRoomChange={changeRoomID} />
             <div style={styles.spacer} />
-            <Chat onRoomChange={ changeRoomID }/>
-            <UserList userID={props.userID}/>
+            <Chat roomId={roomId} onRoomChange={changeRoomID} />
+            <div style={styles.spacer} />
+            <UserList userID={props.userID} />
           </div>
         </div>
       </Container>

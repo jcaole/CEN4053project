@@ -1,20 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Load_Messages, SendMessage, Subscribe_NewMessage, UnSubscribe_Message } from '../util/messages/messaging';
 import { makeRoom } from '../util/rooms/chat_rooms';
 import { getUserInfo } from '../util/user-input/user'
 import { auth } from '../firebase/firebase';
 
-export default function Chat(onRoomChange) {
+export default function Chat({ roomId, onRoomChange }) {
 
   const [user, setUser] = React.useState(null);
   const [chat, setChat] = React.useState(null);
   const [messages, setMessages] = React.useState([]);
-  const [roomId, setRoomId] = React.useState('default');
   const [tempRoomId, setTempRoomId] = React.useState('default');
 
   let messageListener;
 
-
+  const messagesContainerRef = useRef(null);
+  
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
+  
   const loadRoomMessages = (roomID) => {
     UnSubscribe_Message(messageListener);
     setMessages([]);
@@ -53,19 +59,24 @@ export default function Chat(onRoomChange) {
     loadRoomMessages(roomId);
   }, [roomId]);
 
-  
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "60vh", width: "60vw", textAlign: "left"}}>
       <div style={{ textAlign: "center", margin: "10px" }}>
         <h2><u>Current Room: {roomId}</u></h2>
       </div>
-      <div style={{ 
-        flex: "1 1 auto", 
-        overflowY: "auto", 
-        border: "2px solid gray", 
-        padding: "15px", 
-        maxHeight: "60vh",
-        backgroundColor: "rgba(211, 211, 211, 0.8)", // light grey with 80% opacity
+      <div 
+        ref={messagesContainerRef}
+        style={{ 
+          flex: "1 1 auto", 
+          overflowY: "auto", 
+          border: "2px solid gray", 
+          padding: "15px", 
+          maxHeight: "60vh",
+          backgroundColor: "rgba(211, 211, 211, 0.8)", // light grey with 80% opacity
       }}>
         <ul>
           {messages.map((item, index, array) => (
@@ -76,18 +87,22 @@ export default function Chat(onRoomChange) {
         </ul>
       </div>
       {
-          user ? (
-            <div style={{ display: "flex", padding: "10px" }}>
+        user ? (
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
+            <div>
               <input type="text" onChange={(e) => { e.preventDefault(); setChat(e.target.value) }} />
               <button onClick={(e) => { e.preventDefault(); SendMessage(roomId, { content: chat, type: 'string' }); }}>Send Message</button>
-              <input type="text" onChange={(e) => { e.preventDefault(); setTempRoomId(e.target.value) }} />
-              <button onClick={(e) => { e.preventDefault(); makeRoom(tempRoomId); setRoomId(tempRoomId); onRoomChange(roomId); }}>Change Room</button>
             </div>
-           ) : (
-            <></>
-           )
+            <div>
+              <input type="text" onChange={(e) => { e.preventDefault(); setTempRoomId(e.target.value) }} />
+              <button onClick={(e) => { e.preventDefault(); makeRoom(tempRoomId); onRoomChange(tempRoomId); }}>Change Room</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )
       }
       
     </div>
   );
-}
+}  
